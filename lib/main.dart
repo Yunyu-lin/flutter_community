@@ -1,4 +1,5 @@
 import 'package:community_app/page/home/index.dart';
+import 'package:community_app/page/mine/index.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: MinePage(),
     );
   }
 }
