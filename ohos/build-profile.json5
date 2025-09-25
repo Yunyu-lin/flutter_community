@@ -1,0 +1,41 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\lemon\\.ohos\\config\\default_ohos_m0bDbIa9nusMiGjTHYb6uhyRQl2e7vELtWlLTRwNAOc=.cer",
+          "storePassword": "0000001AC35F03849FBF1795C3B62C182FAA0EEAF2F6DB4AA5E5C0E38218A553A0E354C4E696E18C643B",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001AD663DFA96375790EE8ACC524B9FA4AA8278B6B30F7D84786B7848AEBE90F556155E3C0F20160",
+          "profile": "C:\\Users\\lemon\\.ohos\\config\\default_ohos_m0bDbIa9nusMiGjTHYb6uhyRQl2e7vELtWlLTRwNAOc=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\lemon\\.ohos\\config\\default_ohos_m0bDbIa9nusMiGjTHYb6uhyRQl2e7vELtWlLTRwNAOc=.p12"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
