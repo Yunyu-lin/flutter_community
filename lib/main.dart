@@ -1,6 +1,7 @@
-import 'package:community_app/page/home/index.dart';
-import 'package:community_app/page/mine/index.dart';
+
+import 'package:community_app/page/tab_Bar/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MinePage(),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarBrightness: Brightness.dark, // 黑色字体
+          ),
+        ),
+      ),
+      routes: {
+        '/':(context)=> const TabBarPage()
+      },
     );
   }
 }
