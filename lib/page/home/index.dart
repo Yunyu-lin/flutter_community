@@ -1,5 +1,7 @@
 import 'package:community_app/page/home/components/HomeList.dart';
 import 'package:community_app/page/home/components/HomeNav.dart';
+import 'package:community_app/utils/api.dart';
+import 'package:community_app/utils/https.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +12,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List notifyList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getNotifyList();
+  }
+
+  _getNotifyList() async {
+    var result = await HttpUtils().get(Api.notifyList);
+    print('result: $result');
+    setState(() {
+      // notifyList = result['data'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
