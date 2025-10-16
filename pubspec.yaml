@@ -35,6 +35,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  fluttertoast:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_fluttertoast.git
+  flutter_widget_from_html:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_widget_from_html.git
+      path: ./packages/enhanced
+      ref: master
 
 dev_dependencies:
   flutter_test:
