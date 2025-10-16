@@ -1,3 +1,4 @@
+import 'package:community_app/utils/toast.dart';
 import 'package:flutter/material.dart';
 
 class HomeNav extends StatelessWidget {
@@ -30,24 +31,24 @@ class HomeNav extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: navList.map((e) {
           return Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                Image.asset(
-                  e['icon'],
-                  width: 24.0,
-                  height: 24.0,
-                ),
-                const SizedBox(
-                  height: 3,
-                ),
-                Text(
-                  e['title'],
-                  style: const TextStyle(fontSize: 12.0),
-                ),
-              ],
-            ),
-          );
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Image.asset(
+                    e['icon'],
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Text(
+                    e['title'],
+                    style: const TextStyle(fontSize: 12.0),
+                  ),
+                ],
+              ),
+            );
         }).toList(),
       ),
     );

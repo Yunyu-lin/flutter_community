@@ -1,4 +1,5 @@
 
+import 'package:community_app/page/notice/index.dart';
 import 'package:community_app/page/tab_Bar/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,8 +23,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        '/':(context)=> const TabBarPage()
+        '/':(context)=> const TabBarPage(),
+        '/detail':(context)=>const NoticeDetail(),
       },
+      initialRoute: '/',
     );
   }
 }

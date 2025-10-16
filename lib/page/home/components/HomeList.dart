@@ -1,30 +1,9 @@
 import 'package:flutter/material.dart';
 
-class HomeList extends StatefulWidget {
-  HomeList({super.key});
+class HomeList extends StatelessWidget {
+  HomeList({super.key, required this.notifyList});
 
-  @override
-  State<HomeList> createState() => _HomeListState();
-}
-
-class _HomeListState extends State<HomeList> {
-  List notifyList = [
-    {
-      'title': '中秋、国庆温馨提示中秋、国庆温馨提示',
-      'content': '中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示',
-      'createdAt': '2024-09-22 15:00:00',
-    },
-    {
-      'title': '中秋、国庆温馨提示中秋、国庆温馨提示',
-      'content': '中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示',
-      'createdAt': '2024-09-22 15:00:00',
-    },
-    {
-      'title': '中秋、国庆温馨提示中秋、国庆温馨提示',
-      'content': '中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示中秋、国庆温馨提示',
-      'createdAt': '2024-09-22 15:00:00',
-    },
-  ];
+  List notifyList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +11,26 @@ class _HomeListState extends State<HomeList> {
       child: Column(
         children: notifyList.map((item) {
           return Container(
-            margin: const EdgeInsets.only(bottom: 10.0),
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6.0),
-              color: Colors.white,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(item['title']),
-                Text(item['content']),
-                Text(item['createdAt']),
-              ],
-            ),
-          );
+              margin: const EdgeInsets.only(bottom: 10.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6.0),
+                color: Colors.white,
+              ),
+              child: GestureDetector(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item['title']),
+                    Text(item['content']),
+                    Text(item['createdAt']),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, '/detail',
+                      arguments: {'id': item['id']});
+                },
+              ));
         }).toList(),
       ),
     );
