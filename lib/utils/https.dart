@@ -1,12 +1,13 @@
 import 'package:community_app/utils/api.dart';
+import 'package:community_app/utils/api_exception.dart';
 import 'package:dio/dio.dart';
 
 class HttpUtils {
   final _dio = Dio();
   HttpUtils() {
     _dio.options.baseUrl = Api.baseUrl;
-    _dio.options.connectTimeout = Duration(seconds: 10);
-    _dio.options.receiveTimeout = Duration(seconds: 10);
+    _dio.options.connectTimeout = const Duration(seconds: 10);
+    _dio.options.receiveTimeout = const Duration(seconds: 10);
     _dio.options.headers = {
       'Content-Type': 'application/json',
     };
@@ -20,10 +21,12 @@ class HttpUtils {
           return handler.next(options);
         },
         onResponse: (Response response, ResponseInterceptorHandler handler) {
+          response.statusCode! == 200 && response.statusCode! < 300;
           return handler.next(response);
         },
         onError: (DioException error, ErrorInterceptorHandler handler) {
-          return handler.next(error);
+          return handler
+              .reject(DioException(requestOptions: error.requestOptions));
         },
       ),
     );
@@ -68,10 +71,10 @@ class HttpUtils {
   }
 
   dynamic _handelResponse(Response response) {
-    if (response.statusCode == 200) {
+    if (response.data['code'] == ResultCode.SUCCESS_CODE) {
       return response.data;
     } else {
-      throw Exception('Failed to load data,${response.statusCode}');
+      throw Exception('Failed to load data,${response.data['code']}');
     }
   }
 
