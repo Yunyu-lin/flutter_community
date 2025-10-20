@@ -3,8 +3,14 @@ import 'package:community_app/utils/api_exception.dart';
 import 'package:dio/dio.dart';
 
 class HttpUtils {
-  final _dio = Dio();
-  HttpUtils() {
+  static final HttpUtils _instance=HttpUtils._internal();
+
+  static HttpUtils get of =>_instance;
+
+  factory HttpUtils()=>_instance;
+
+
+  HttpUtils._internal(){
     _dio.options.baseUrl = Api.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
@@ -13,6 +19,9 @@ class HttpUtils {
     };
     _addInterceptors();
   }
+
+
+  final _dio = Dio();
 
   void _addInterceptors() {
     _dio.interceptors.add(
@@ -95,5 +104,3 @@ class HttpUtils {
     }
   }
 }
-
-final httpUtils = HttpUtils();

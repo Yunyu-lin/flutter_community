@@ -1,8 +1,7 @@
 import 'package:community_app/page/home/components/HomeList.dart';
 import 'package:community_app/page/home/components/HomeNav.dart';
-import 'package:community_app/utils/api.dart';
 import 'package:community_app/utils/api_exception.dart';
-import 'package:community_app/utils/https.dart';
+import 'package:community_app/utils/getApi.dart';
 import 'package:community_app/utils/toast.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   _getNotifyList() async {
     try {
-      var result = await HttpUtils().get(Api.notifyList);
+      var result = await getAnnouncementAPI();
       print('result: $result');
       if (result['code'] != ResultCode.SUCCESS_CODE) return ToastUtils.showError('请求失败');
       ToastUtils.showSuccess('请求成功');
