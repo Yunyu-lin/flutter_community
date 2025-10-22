@@ -1,6 +1,8 @@
-
+import 'package:community_app/page/login/index.dart';
 import 'package:community_app/page/notice/index.dart';
+import 'package:community_app/page/profile/index.dart';
 import 'package:community_app/page/tab_Bar/index.dart';
+import 'package:community_app/utils/tokenManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,6 +16,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    tokenManager.instance.init();
+
     return MaterialApp(
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
@@ -23,10 +27,19 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        '/':(context)=> const TabBarPage(),
-        '/detail':(context)=>const NoticeDetail(),
+        '/': (context) => const TabBarPage(),
+        '/detail': (context) => const NoticeDetail(),
+        '/login': (context) => const LoginPage(),
+        // '/profile':(context)=>const ProfilePage(),
       },
       initialRoute: '/',
+      onGenerateRoute: (setting) {
+        final token = tokenManager.instance.getToken();
+        if (token.isEmpty)
+          return MaterialPageRoute(builder: (context) => const LoginPage());
+        if (setting.name == '/profile')
+          return MaterialPageRoute(builder: (context) => const ProfilePage());
+      },
     );
   }
 }
