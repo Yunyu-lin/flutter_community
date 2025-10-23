@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:community_app/utils/getApi.dart';
 import 'package:community_app/utils/toast.dart';
 import 'package:flutter/material.dart';
 
@@ -13,16 +14,31 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   int _count = 10;
   Timer? _timer;
+  TextEditingController phoneController = TextEditingController();
+  bool isSend = false;
 
-  void beginCount() {
+  void beginCount() async {
+    if(isSend)return;
+    if (phoneController.text.isEmpty) {
+      return ToastUtils.showError('请输入手机号');
+    }
+    if (!RegExp(r'^1[3-9]\d{9}$').hasMatch(phoneController.text)) {
+      return ToastUtils.showError('请输入正确手机号');
+    }
+    isSend=true;
+    var result = await getSendCodeAPI(phoneController.text);
+    print('result3: $result');
+    ToastUtils.showSuccess(result['data']['code']);
     if (_count == 10) {
-      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (_count == 0) {
           timer.cancel();
           _count = 10;
+          isSend=false;
           setState(() {});
           return;
-        };
+        }
+        ;
         _count--;
         setState(() {});
       });
@@ -37,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     }
     return Text(
       '${_count}s',
-      style: TextStyle(color: Colors.grey),
+      style: const TextStyle(color: Colors.grey),
     );
   }
 
@@ -85,9 +101,10 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Expanded(
+                Expanded(
                   child: TextField(
-                    decoration: InputDecoration(
+                    controller: phoneController,
+                    decoration: const InputDecoration(
                       labelText: '手机号',
                       hintText: '请输入手机号',
                     ),
