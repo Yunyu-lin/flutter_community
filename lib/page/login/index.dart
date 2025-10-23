@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:community_app/utils/toast.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,6 +11,42 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  int _count = 10;
+  Timer? _timer;
+
+  void beginCount() {
+    if (_count == 10) {
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        if (_count == 0) {
+          timer.cancel();
+          _count = 10;
+          setState(() {});
+          return;
+        };
+        _count--;
+        setState(() {});
+      });
+    } else {
+      ToastUtils.showInfo('请稍后再试');
+    }
+  }
+
+  Widget getTimeShow() {
+    if (_count == 10) {
+      return const Text('获取验证码');
+    }
+    return Text(
+      '${_count}s',
+      style: TextStyle(color: Colors.grey),
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,8 +102,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {
                     //
+                    beginCount();
                   },
-                  child: const Text('获取验证码'),
+                  child: getTimeShow(),
                 ),
               ],
             ),
