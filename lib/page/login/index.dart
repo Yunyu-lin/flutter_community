@@ -15,6 +15,8 @@ class _LoginPageState extends State<LoginPage> {
   int _count = 10;
   Timer? _timer;
   TextEditingController phoneController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
+
   bool isSend = false;
 
   void beginCount() async {
@@ -28,7 +30,8 @@ class _LoginPageState extends State<LoginPage> {
     isSend=true;
     var result = await getSendCodeAPI(phoneController.text);
     print('result3: $result');
-    ToastUtils.showSuccess(result['data']['code']);
+    // ToastUtils.showSuccess(result['data']['code']);
+    codeController.text=result['data']['code'];
     if (_count == 10) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (_count == 0) {
@@ -126,11 +129,12 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             const SizedBox(height: 8),
-            const TextField(
+             TextField(
+              controller: codeController,
               decoration: InputDecoration(
                 labelText: '验证码',
                 hintText: '请输入6位验证码',
-              ),
+              )
             ),
             const SizedBox(height: 8),
             Row(
