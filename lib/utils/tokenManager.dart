@@ -11,6 +11,8 @@ class tokenManager {
   tokenManager._();
 
   String _token = '';
+  String _refreshToken = '';
+
 
   Future<SharedPreferences> _getTokenInstance() {
     return SharedPreferences.getInstance();
@@ -19,19 +21,30 @@ class tokenManager {
   init() async {
     final prefs = await _getTokenInstance();
     _token = prefs.getString(GlobalVariable.Token_Key) ?? '';
+    _refreshToken = prefs.getString(GlobalVariable.refreshToken_Key) ?? '';
   }
 
-  setToken(String token) async {
+  setToken(String token , String refreshToken) async {
     final prefs = await _getTokenInstance();
     prefs.setString(GlobalVariable.Token_Key, token);
+    prefs.setString(GlobalVariable.refreshToken_Key, refreshToken);
+    _token=token;
+    _refreshToken=refreshToken;
   }
 
   String getToken() {
     return _token;
   }
 
+  String getRefreshToken(){
+    return _refreshToken;
+  }
+
   removeToken() async {
     final prefs = await _getTokenInstance();
     prefs.remove(GlobalVariable.Token_Key);
+    prefs.remove(GlobalVariable.refreshToken_Key);
+    _token='';
+    _refreshToken='';
   }
 }

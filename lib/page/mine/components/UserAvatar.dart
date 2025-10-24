@@ -33,10 +33,7 @@ class _UserAvatarState extends State<UserAvatar> {
         ),
       ),
       onTap: () async{
-        if (await tokenManager.instance.getToken() == '') {
           Navigator.pushNamed(context, '/profile');
-
-        }
       },
     );
   }

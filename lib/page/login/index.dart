@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:community_app/utils/getApi.dart';
 import 'package:community_app/utils/toast.dart';
+import 'package:community_app/utils/tokenManager.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,24 +21,24 @@ class _LoginPageState extends State<LoginPage> {
   bool isSend = false;
 
   void beginCount() async {
-    if(isSend)return;
+    if (isSend) return;
     if (phoneController.text.isEmpty) {
       return ToastUtils.showError('请输入手机号');
     }
     if (!RegExp(r'^1[3-9]\d{9}$').hasMatch(phoneController.text)) {
       return ToastUtils.showError('请输入正确手机号');
     }
-    isSend=true;
+    isSend = true;
     var result = await getSendCodeAPI(phoneController.text);
     print('result3: $result');
     // ToastUtils.showSuccess(result['data']['code']);
-    codeController.text=result['data']['code'];
+    codeController.text = result['data']['code'];
     if (_count == 10) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (_count == 0) {
           timer.cancel();
           _count = 10;
-          isSend=false;
+          isSend = false;
           setState(() {});
           return;
         }
@@ -48,6 +49,21 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       ToastUtils.showInfo('请稍后再试');
     }
+  }
+
+  void login() async {
+    if (phoneController.text.isEmpty || codeController.text.isEmpty) {
+      return ToastUtils.showError('手机号或验证码不能为空');
+    }
+    if (!RegExp(r'^1[3-9]\d{9}$').hasMatch(phoneController.text) ||
+        !RegExp(r'^\d{6}$').hasMatch(codeController.text)) {
+      return ToastUtils.showError('请输入正确手机和验证码号');
+    }
+    final result = await getLoginAPI(phoneController.text, codeController.text);
+    print('result4:$result');
+    tokenManager.instance.setToken(result['data']['token'],result['data']['refreshToken']);
+    _timer?.cancel();
+    Navigator.pop(context);
   }
 
   Widget getTimeShow() {
@@ -129,13 +145,12 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             const SizedBox(height: 8),
-             TextField(
-              controller: codeController,
-              decoration: InputDecoration(
-                labelText: '验证码',
-                hintText: '请输入6位验证码',
-              )
-            ),
+            TextField(
+                controller: codeController,
+                decoration: InputDecoration(
+                  labelText: '验证码',
+                  hintText: '请输入6位验证码',
+                )),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -154,7 +169,9 @@ class _LoginPageState extends State<LoginPage> {
                       backgroundColor: const Color.fromARGB(255, 85, 145, 175),
                       minimumSize: const Size(100, 50),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      login();
+                    },
                     child: const Text(
                       '登录',
                       style: TextStyle(

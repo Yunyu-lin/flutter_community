@@ -3,4 +3,6 @@ class ResultCode {
 }
 class GlobalVariable {
   static const String Token_Key = 'TokenKey';
+  static const String refreshToken_Key = 'refreshTokenKey';
+
 }
