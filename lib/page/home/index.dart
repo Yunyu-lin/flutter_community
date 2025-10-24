@@ -3,6 +3,7 @@ import 'package:community_app/page/home/components/HomeNav.dart';
 import 'package:community_app/utils/api_exception.dart';
 import 'package:community_app/utils/getApi.dart';
 import 'package:community_app/utils/toast.dart';
+import 'package:community_app/utils/tokenManager.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -52,6 +53,10 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         children: [
+          ElevatedButton(onPressed: (){
+            tokenManager.instance.removeToken();
+          }, child: Text('退出登录')),
+
           // 导航条
           HomeNav(),
 

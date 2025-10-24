@@ -1,5 +1,7 @@
 import 'package:community_app/utils/api.dart';
 import 'package:community_app/utils/api_exception.dart';
+import 'package:community_app/utils/toast.dart';
+import 'package:community_app/utils/tokenManager.dart';
 import 'package:dio/dio.dart';
 
 class HttpUtils {
@@ -27,6 +29,9 @@ class HttpUtils {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+          final token =tokenManager.instance.getToken();
+          if(token.isEmpty)  options.headers["Authorization"]='Bearer $token';
+
           return handler.next(options);
         },
         onResponse: (Response response, ResponseInterceptorHandler handler) {
@@ -83,6 +88,7 @@ class HttpUtils {
     if (response.data['code'] == ResultCode.SUCCESS_CODE) {
       return response.data;
     } else {
+      ToastUtils.showError(response.data['message']);
       throw Exception('Failed to load data,${response.data['code']}');
     }
   }

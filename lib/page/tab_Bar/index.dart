@@ -1,6 +1,7 @@
 import 'package:community_app/page/home/index.dart';
 import 'package:community_app/page/mine/index.dart';
 import 'package:flutter/material.dart';
+import 'package:community_app/utils/tokenManager.dart';
 
 class TabBarPage extends StatefulWidget {
   const TabBarPage({super.key});
@@ -23,6 +24,12 @@ class _TabBarPageState extends State<TabBarPage> {
       'active': 'assets/tabs/my_active.png'
     }
   ];
+@override
+void initState(){
+  super.initState();
+  tokenManager.instance.init();
+}
+
 
   @override
   Widget build(BuildContext context) {
