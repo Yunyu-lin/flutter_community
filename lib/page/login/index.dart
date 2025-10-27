@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:community_app/utils/eventBus.dart';
 import 'package:community_app/utils/getApi.dart';
 import 'package:community_app/utils/toast.dart';
 import 'package:community_app/utils/tokenManager.dart';
@@ -62,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
     final result = await getLoginAPI(phoneController.text, codeController.text);
     print('result4:$result');
     tokenManager.instance.setToken(result['data']['token'],result['data']['refreshToken']);
+    EventBusUtils.instance.fire(LogSuccessEvent());
     _timer?.cancel();
     Navigator.pop(context);
   }

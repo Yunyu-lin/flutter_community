@@ -1,18 +1,19 @@
 import 'package:community_app/utils/api.dart';
 import 'package:community_app/utils/api_exception.dart';
+import 'package:community_app/utils/eventBus.dart';
 import 'package:community_app/utils/toast.dart';
 import 'package:community_app/utils/tokenManager.dart';
 import 'package:dio/dio.dart';
+import 'package:event_bus/event_bus.dart';
 
 class HttpUtils {
-  static final HttpUtils _instance=HttpUtils._internal();
+  static final HttpUtils _instance = HttpUtils._internal();
 
-  static HttpUtils get of =>_instance;
+  static HttpUtils get of => _instance;
 
-  factory HttpUtils()=>_instance;
+  factory HttpUtils() => _instance;
 
-
-  HttpUtils._internal(){
+  HttpUtils._internal() {
     _dio.options.baseUrl = Api.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
@@ -22,16 +23,15 @@ class HttpUtils {
     _addInterceptors();
   }
 
-
   final _dio = Dio();
 
   void _addInterceptors() {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
-          final token =tokenManager.instance.getToken();
-          if(token.isEmpty)  options.headers["Authorization"]='Bearer $token';
-
+          final token = tokenManager.instance.getToken();
+          if (!token.isEmpty)
+            options.headers["Authorization"] = 'Bearer $token';
           return handler.next(options);
         },
         onResponse: (Response response, ResponseInterceptorHandler handler) {
@@ -39,6 +39,11 @@ class HttpUtils {
           return handler.next(response);
         },
         onError: (DioException error, ErrorInterceptorHandler handler) {
+          ToastUtils.showError('请求错误');
+          if (error.response?.statusCode == 401) {
+            print('code401');
+            EventBusUtils.instance.fire(Login());
+          }
           return handler
               .reject(DioException(requestOptions: error.requestOptions));
         },

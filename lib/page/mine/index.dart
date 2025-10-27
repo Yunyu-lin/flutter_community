@@ -1,4 +1,5 @@
 import 'package:community_app/page/mine/components/UserAvatar.dart';
+import 'package:community_app/utils/eventBus.dart';
 import 'package:community_app/utils/getApi.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,10 @@ class _MinePageState extends State<MinePage> {
   @override
   void initState() {
     super.initState();
+    EventBusUtils.instance.on<LogSuccessEvent>().listen((event){
+      print('登录状态改变了');
+     userinfo();
+    });
   }
 
   @override

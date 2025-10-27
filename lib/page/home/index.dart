@@ -1,9 +1,11 @@
 import 'package:community_app/page/home/components/HomeList.dart';
 import 'package:community_app/page/home/components/HomeNav.dart';
 import 'package:community_app/utils/api_exception.dart';
+import 'package:community_app/utils/eventBus.dart';
 import 'package:community_app/utils/getApi.dart';
 import 'package:community_app/utils/toast.dart';
 import 'package:community_app/utils/tokenManager.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,15 +21,20 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    EventBusUtils.instance.on<Login>().listen((event) {
+      print('event:::$event');
+      ToastUtils.showInfo('登录过期');
+      Navigator.pushNamed(context, '/login');
+    });
     _getNotifyList();
   }
-
 
   _getNotifyList() async {
     try {
       var result = await getAnnouncementAPI();
       print('result: $result');
-      if (result['code'] != ResultCode.SUCCESS_CODE) return ToastUtils.showError('请求失败');
+      if (result['code'] != ResultCode.SUCCESS_CODE)
+        return ToastUtils.showError('请求失败');
       ToastUtils.showSuccess('请求成功');
       setState(() {
         notifyList = result['data'];
@@ -53,9 +60,11 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         children: [
-          ElevatedButton(onPressed: (){
-            tokenManager.instance.removeToken();
-          }, child: Text('退出登录')),
+          ElevatedButton(
+              onPressed: () {
+                tokenManager.instance.removeToken();
+              },
+              child: Text('退出登录')),
 
           // 导航条
           HomeNav(),
@@ -72,7 +81,7 @@ class _HomePageState extends State<HomePage> {
             height: 6.0,
           ),
           // 社区公告
-          HomeList(notifyList:notifyList)
+          HomeList(notifyList: notifyList)
         ],
       ),
     );
