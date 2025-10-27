@@ -38,7 +38,7 @@ void initState(){
         top: false,
         child: IndexedStack(
           index: _currentIndex,
-          children: [HomePage(), MinePage()],
+          children: [HomePage(), MinePage(activeIndex: _currentIndex,)],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

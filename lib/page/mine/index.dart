@@ -1,14 +1,20 @@
 import 'package:community_app/page/mine/components/UserAvatar.dart';
+import 'package:community_app/utils/getApi.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class MinePage extends StatefulWidget {
-  MinePage({super.key});
+  MinePage({super.key, required this.activeIndex});
+
+  final int activeIndex;
 
   @override
   State<MinePage> createState() => _MinePageState();
 }
 
 class _MinePageState extends State<MinePage> {
+  Map<String, dynamic> _userInfo = {"id": "", "avatar": "", "nickName": ""};
   final List setList = [
     {
       'icon': 'assets/images/house_profile_icon@2x.png',
@@ -23,6 +29,29 @@ class _MinePageState extends State<MinePage> {
       'title': '访客记录',
     }
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant MinePage oldWidget) {
+    if (widget.activeIndex == 1) {
+      userinfo();
+    }
+    ;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void userinfo() async {
+    final result = await getUserInfoAPI();
+    print('result5:$result');
+    _userInfo=result['data'];
+    setState(() {
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +71,7 @@ class _MinePageState extends State<MinePage> {
         child: Column(
           children: [
             //头像资料
-            UserAvatar(),
+            UserAvatar(userInfo:_userInfo),
             SizedBox(
               height: 10,
             ),
