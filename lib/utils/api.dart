@@ -3,4 +3,5 @@ class Api {
   static const String notifyList = '/announcement';
   static const String SEND_CODE = "/code";
   static const String LOGIN = "/login";
+  static const String User_Info='/userInfo';
 }

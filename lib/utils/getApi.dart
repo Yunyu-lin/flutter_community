@@ -6,3 +6,5 @@ Future<dynamic> getAnnouncementIdAPI(String id) => HttpUtils.of.get('${Api.notif
 Future<dynamic> getAnnouncementAPI() => HttpUtils.of.get(Api.notifyList);
 Future<dynamic> getSendCodeAPI(params)=>HttpUtils.of.get(Api.SEND_CODE,queryParameters:{'mobile':params});
 Future<dynamic> getLoginAPI(phone,code)=>HttpUtils.of.post(Api.LOGIN,data: {'mobile':phone,'code':code});
+Future<dynamic> getUserInfoAPI()=>HttpUtils.of.get(Api.User_Info);
+
